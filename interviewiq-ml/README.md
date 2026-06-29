@@ -109,16 +109,3 @@ python app.py
 - More job role support
 
 ---
-
-## 👩‍💻 Author
-
-**Sheema**
-
-GitHub:
-https://github.com/sheemashaik17
-
----
-
-## ⭐ Support
-
-If you like this project, consider giving it a ⭐ on GitHub.
