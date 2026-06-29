@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}InterviewIQ — Interview Question Predictor{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <div class="hero-label">
+    <span class="dot"></span> AI-Powered Interview Preparation
+  </div>
+  <h1>Predict Your <span>Interview Questions</span></h1>
+  <p>
+    Upload your resume and enter the job role — our system analyzes your skills and projects
+    to generate <strong>30 tailored interview questions</strong>.
+  </p>
+  <div class="hero-btns">
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('prepare') }}" class="btn btn-primary">Start Preparing →</a>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Dashboard</a>
+    {% else %}
+      <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started Free</a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="steps-section">
+  <div class="steps-inner">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Four simple steps to personalized interview prep</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Create Account</h3>
+        <p>Register with your email and create a free account.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Upload Resume</h3>
+        <p>Upload your resume in PDF or DOCX format.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Enter Job Role</h3>
+        <p>Type the job role or paste the job description.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>Get 30 Questions</h3>
+        <p>Receive tailored questions — technical, project, HR and more.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Ready to Prepare Smarter?</h2>
+  <p>Join candidates who prepare with InterviewIQ before their interviews.</p>
+  {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('register') }}" class="btn btn-primary">Start for Free</a>
+  {% else %}
+    <a href="{{ url_for('prepare') }}" class="btn btn-primary">Prepare Now</a>
+  {% endif %}
+</div>
+
+{% endblock %}

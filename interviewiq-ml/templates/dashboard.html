@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — InterviewIQ{% endblock %}
+{% block content %}
+<div class="page">
+
+  <!-- Welcome -->
+  <div class="welcome-card">
+    <div>
+      <h2>Welcome back, <span>{{ current_user.name.split()[0] }}</span> 👋</h2>
+      <p>Ready to prepare for your next interview?</p>
+    </div>
+    <a href="{{ url_for('prepare') }}" class="btn btn-primary">+ New Preparation</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-row">
+    <div class="card stat-box blue">
+      <div class="num">{{ total }}</div>
+      <div class="lbl">Sessions</div>
+    </div>
+    <div class="card stat-box cyan">
+      <div class="num">{{ total * 30 }}</div>
+      <div class="lbl">Questions Generated</div>
+    </div>
+    <div class="card stat-box green">
+      <div class="num">{% if total > 0 %}Active{% else %}Start!{% endif %}</div>
+      <div class="lbl">Status</div>
+    </div>
+  </div>
+
+  <!-- Recent Sessions -->
+  <p class="page-title" style="font-size:1rem;margin-bottom:14px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px">Recent Sessions</p>
+
+  {% if sessions %}
+  <div class="session-list">
+    {% for s in sessions %}
+    <div class="card session-item">
+      <div class="si-left">
+        <div class="si-emoji">
+          {% set r = s.job_role.lower() %}
+          {% if 'python' in r %}🐍{% elif 'java' in r and 'script' not in r %}☕{% elif 'javascript' in r or 'react' in r %}💛{% elif 'data' in r or 'ml' in r %}📊{% elif 'sql' in r %}🗄️{% elif 'devops' in r %}🚀{% else %}💼{% endif %}
+        </div>
+        <div>
+          <div class="si-role">{{ s.job_role }}</div>
+          <div class="si-date">{{ s.created_at.strftime('%d %b %Y') }}</div>
+        </div>
+      </div>
+      <div class="si-right">
+        <span class="badge badge-blue">30 Questions</span>
+        <a href="{{ url_for('result', sid=s.id) }}" class="btn btn-outline btn-sm">View →</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="icon">🎯</div>
+    <h3>No sessions yet</h3>
+    <p>Create your first preparation to get started!</p>
+    <a href="{{ url_for('prepare') }}" class="btn btn-primary" style="margin-top:16px">Start Now</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

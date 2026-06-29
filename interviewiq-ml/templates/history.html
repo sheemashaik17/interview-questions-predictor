@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}History — InterviewIQ{% endblock %}
+{% block content %}
+<div class="page">
+  <h1 class="page-title">Preparation History</h1>
+  <p class="page-sub">All your past interview preparation sessions.</p>
+
+  {% if sessions %}
+
+  <p style="color:var(--muted);font-size:.85rem;font-family:var(--mono);margin-bottom:20px">
+    {{ sessions|length }} session(s) · {{ sessions|length * 30 }} questions generated
+  </p>
+
+  {% for s in sessions %}
+  <div class="card history-card">
+    <div class="hc-top">
+      <div class="hc-left">
+        <div class="hc-emoji">
+          {% set r = s.job_role.lower() %}
+          {% if 'python' in r %}🐍{% elif 'java' in r and 'script' not in r %}☕{% elif 'javascript' in r or 'react' in r %}💛{% elif 'data' in r or 'ml' in r %}📊{% elif 'sql' in r %}🗄️{% elif 'devops' in r %}🚀{% else %}💼{% endif %}
+        </div>
+        <div>
+          <div class="hc-role">Day {{ loop.index }} — {{ s.job_role }}</div>
+          <div class="hc-date">{{ s.created_at.strftime('%d %b %Y, %I:%M %p') }}</div>
+        </div>
+      </div>
+      <div class="hc-right">
+        <button class="btn btn-outline btn-sm" onclick="togglePreview({{ s.id }}, this)">
+          👁 Preview
+        </button>
+        <a href="{{ url_for('result', sid=s.id) }}" class="btn btn-primary btn-sm">Full View →</a>
+        <form method="POST" action="{{ url_for('delete_session', sid=s.id) }}"
+              onsubmit="return confirm('Delete this session?')" style="display:inline">
+          <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Expandable questions preview -->
+    <div class="hc-questions" id="hq-{{ s.id }}">
+      <div class="loading-qs" id="loading-{{ s.id }}">Loading questions...</div>
+      <div id="qlist-{{ s.id }}"></div>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% else %}
+  <div class="empty-state">
+    <div class="icon">📭</div>
+    <h3>No history yet</h3>
+    <p>Your sessions will appear here after you generate questions.</p>
+    <a href="{{ url_for('prepare') }}" class="btn btn-primary" style="margin-top:16px">Start First Prep</a>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+async function togglePreview(id, btn) {
+  const box  = document.getElementById('hq-' + id);
+  const load = document.getElementById('loading-' + id);
+  const list = document.getElementById('qlist-' + id);
+
+  // Toggle open/close
+  if (box.style.display === 'block') {
+    box.style.display = 'none';
+    btn.textContent = '👁 Preview';
+    return;
+  }
+
+  box.style.display = 'block';
+  btn.textContent = '▲ Hide';
+
+  // Only fetch once
+  if (list.innerHTML !== '') return;
+
+  try {
+    const res  = await fetch(`/history/${id}/questions`);
+    const data = await res.json();
+    load.style.display = 'none';
+
+    const colors = { Technical:'#60a5fa', Project:'#22d3ee', Conceptual:'#fbbf24', HR:'#34d399' };
+
+    list.innerHTML = data.questions.map((q, i) => `
+      <div class="hq-item">
+        <span class="hq-num">${i+1}.</span>
+        <span style="font-size:.7rem;padding:2px 8px;border-radius:50px;margin-right:6px;background:rgba(255,255,255,.05);color:${colors[q.type]||'#aaa'}">${q.type}</span>
+        <span class="hq-text">${q.question}</span>
+      </div>
+    `).join('');
+  } catch(e) {
+    load.textContent = 'Failed to load questions.';
+  }
+}
+</script>
+{% endblock %}

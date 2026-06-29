@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Prepare — InterviewIQ{% endblock %}
+{% block content %}
+<div class="page">
+  <h1 class="page-title">New Preparation</h1>
+  <p class="page-sub">Upload your resume and enter the job role to generate 30 questions.</p>
+
+  <form method="POST" enctype="multipart/form-data" id="prepForm">
+    <div class="prepare-grid">
+
+      <!-- Left: Resume Upload -->
+      <div class="card">
+        <p style="font-weight:700;margin-bottom:16px">📄 Resume Upload</p>
+
+        <div class="drop-zone" id="dropZone">
+          <div id="dzDefault">
+            <div class="dz-icon">☁️</div>
+            <div class="dz-title">Drag & drop or click to upload</div>
+            <div class="dz-sub">PDF or DOCX • Max 5MB</div>
+          </div>
+          <div class="dz-ok" id="dzOk">
+            <div class="dz-ok-icon">✅</div>
+            <div class="dz-fname" id="dzName"></div>
+            <button type="button" class="remove-btn" onclick="removeFile()">Remove</button>
+          </div>
+          <input type="file" name="resume" id="fileInput" accept=".pdf,.docx" required/>
+        </div>
+
+        <p style="font-size:.8rem;color:var(--muted)">We extract: skills, technologies, projects from your resume.</p>
+      </div>
+
+      <!-- Right: Job Details -->
+      <div class="card">
+        <p style="font-weight:700;margin-bottom:16px">💼 Job Details</p>
+
+        <div class="form-group">
+          <label>Job Role *</label>
+          <input type="text" name="job_role" id="jobRole"
+                 placeholder="e.g. Python Developer, React Developer" required/>
+          <!-- Quick role pills -->
+          <div class="role-pills" style="margin-top:10px">
+            {% for role in ['Python Developer','Data Scientist','React Developer','Java Developer','SQL Developer','ML Engineer','DevOps Engineer'] %}
+            <button type="button" class="role-pill" onclick="setRole('{{ role }}')">{{ role }}</button>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px">
+          <label>Job Description <span style="color:var(--muted)">(optional)</span></label>
+          <textarea name="job_desc" rows="7"
+            placeholder="Paste the job description here for better accuracy..."></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" class="btn btn-primary" style="padding:13px 36px;font-size:1rem">
+        ✨ Generate Questions
+      </button>
+      <p class="submit-note">Uses TF-IDF + Cosine Similarity to rank question relevance</p>
+    </div>
+  </form>
+
+  <!-- Loading overlay -->
+  <div class="overlay" id="overlay">
+    <div class="spinner"></div>
+    <p>Analyzing your resume and generating questions...</p>
+  </div>
+
+</div>
+
+<script>
+// Drop zone
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
+dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = '');
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  if (e.dataTransfer.files[0]) showFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) showFile(fileInput.files[0]); });
+
+function showFile(file) {
+  document.getElementById('dzDefault').style.display = 'none';
+  const ok = document.getElementById('dzOk');
+  ok.style.display = 'flex';
+  document.getElementById('dzName').textContent = file.name;
+}
+
+function removeFile() {
+  fileInput.value = '';
+  document.getElementById('dzDefault').style.display = 'block';
+  document.getElementById('dzOk').style.display = 'none';
+}
+
+// Quick role pills
+function setRole(role) {
+  document.getElementById('jobRole').value = role;
+  document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Show loading on submit
+document.getElementById('prepForm').addEventListener('submit', () => {
+  document.getElementById('overlay').style.display = 'flex';
+});
+</script>
+{% endblock %}

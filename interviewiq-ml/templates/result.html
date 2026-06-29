@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Results — {{ s.job_role }}{% endblock %}
+{% block content %}
+<div class="page">
+
+  <!-- Header -->
+  <div class="result-header">
+    <div>
+      <span class="badge badge-green" style="margin-bottom:8px">✓ 30 Questions Generated</span>
+      <h1 class="page-title" style="margin-bottom:4px">{{ s.job_role }}</h1>
+      <p class="result-meta">{{ s.created_at.strftime('%d %B %Y, %I:%M %p') }}</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-outline btn-sm" onclick="window.print()">🖨 Print</button>
+      <a href="{{ url_for('prepare') }}" class="btn btn-primary btn-sm">+ New Prep</a>
+    </div>
+  </div>
+
+  <!-- ML Prediction Box -->
+  <div class="card" style="margin-bottom:20px;border-color:#1a3a5c;background:linear-gradient(135deg,#0f1f3d,#0c2233)">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="font-size:2rem">🤖</div>
+      <div style="flex:1">
+        <p style="font-size:.75rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">ML Model Prediction from Resume</p>
+        <p style="font-size:1rem;font-weight:700">
+          Detected Role: <span style="color:var(--cyan)">{{ s.predicted_role }}</span>
+          <span class="badge badge-cyan" style="margin-left:8px">{{ s.confidence }}% confidence</span>
+        </p>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:4px">
+          {% if s.predicted_role == s.job_role %}
+            ✅ ML prediction matches your entered role — highly relevant questions generated.
+          {% else %}
+            ℹ️ You entered <strong style="color:var(--text)">{{ s.job_role }}</strong> — questions combine both roles for better coverage.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detected Skills -->
+  {% if skills %}
+  <div class="card" style="margin-bottom:24px">
+    <p style="font-size:.8rem;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Skills Detected from Resume</p>
+    <div class="skills-row">
+      {% for skill in skills %}
+      <span class="badge badge-blue">{{ skill }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Questions grouped by type -->
+  {% set sections = [
+    ('Technical',  'technical',  '⚙️'),
+    ('Project',    'project',    '📁'),
+    ('Conceptual', 'conceptual', '💡'),
+    ('HR',         'hr',         '🤝')
+  ] %}
+
+  {% for type_name, css_class, icon in sections %}
+    {% set qs = questions | selectattr('type', 'equalto', type_name) | list %}
+    {% if qs %}
+    <div class="q-section">
+      <div class="q-section-title {{ css_class }}">
+        {{ icon }} {{ type_name }} Questions
+        <span class="badge" style="margin-left:auto;background:rgba(255,255,255,.1);color:inherit">{{ qs|length }}</span>
+      </div>
+      <div class="q-list">
+        {% for q in qs %}
+        <div class="q-item">
+          <span class="q-num">{{ loop.index }}.</span>
+          <span class="q-text">{{ q.question }}</span>
+          <button class="q-copy" onclick="copyQ(this)" title="Copy">📋</button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+
+  <div class="result-actions">
+    <a href="{{ url_for('history') }}" class="btn btn-outline">View History</a>
+    <a href="{{ url_for('prepare') }}" class="btn btn-primary">New Preparation</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+function copyQ(btn) {
+  navigator.clipboard.writeText(btn.previousElementSibling.textContent);
+  btn.textContent = '✅';
+  setTimeout(() => btn.textContent = '📋', 1500);
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+{% endblock %}
