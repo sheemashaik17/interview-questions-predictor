@@ -111,27 +111,42 @@ http://127.0.0.1:5000
 
 ## 📸 Screenshots
 
-### 🏠 Landing Page
+###  Landing Page
 
-*(Add Landing Page Screenshot)*
-
----
-
-### 📄 Resume Upload
-
-*(Add Resume Upload Screenshot)*
+<img width="805" height="1584" alt="127 0 0 1_5000_" src="https://github.com/user-attachments/assets/5f897bfb-4701-42d7-9b6d-c55bdfe79743" />
 
 ---
 
-### 📊 User Dashboard
+### Login page
 
-*(Add Dashboard Screenshot)*
+<img width="805" height="681" alt="127 0 0 1_5000_login" src="https://github.com/user-attachments/assets/a30c9cd0-95df-483a-88e1-6ae217d77496" />
+
+---
+
+###  register page
+
+
+<img width="805" height="895" alt="127 0 0 1_5000_register" src="https://github.com/user-attachments/assets/80400b00-8078-45f6-bad3-69dc4d30eca6" />
+
+
+---
+
+###  Dashboard
+
+<img width="805" height="1001" alt="127 0 0 1_5000_dashboard" src="https://github.com/user-attachments/assets/d05afd58-e532-4cdc-95bf-d4a4efafca6c" />
+
+---
+
+###  Resume Upload
+
+<img width="805" height="1404" alt="127 0 0 1_5000_prepare" src="https://github.com/user-attachments/assets/979fee72-7fae-4981-8cad-ab3a619f4f9d" />
 
 ---
 
 ### 🤖 Generated Interview Questions
 
-*(Add Generated Questions Screenshot)*
+<img width="805" height="3113" alt="127 0 0 1_5000_result_2" src="https://github.com/user-attachments/assets/d795f46c-063c-4cd9-8e30-7366226f48aa" />
+
 
 ---
 
