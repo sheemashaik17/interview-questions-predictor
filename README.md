@@ -113,46 +113,43 @@ http://127.0.0.1:5000
 
 ###  Landing Page
 
-
+<img width="2880" height="2456" alt="127 0 0 1_5000_ (2)" src="https://github.com/user-attachments/assets/455f6ec9-77cd-4055-a226-9464336d57af" />
 
 ---
 
 ### Login page
 
-
+<img width="2880" height="1976" alt="127 0 0 1_5000_login" src="https://github.com/user-attachments/assets/815fb58c-50c2-466c-8a60-cf32e01a5cc8" />
 
 ---
 
 ###  register page
 
-
-
-
+<img width="2880" height="1976" alt="127 0 0 1_5000_register" src="https://github.com/user-attachments/assets/949f8758-b996-4a89-8e55-2d21518bff6c" />
 
 ---
 
 ###  Dashboard
 
-
+<img width="2880" height="1976" alt="127 0 0 1_5000_dashboard" src="https://github.com/user-attachments/assets/d69c7bd8-b09f-4c37-a395-08cb2c4e17d0" />
 
 ---
 
 ###  Resume Upload
 
-
-
----
-
-### 🤖 Generated Interview Questions
-
-
-
+<img width="2880" height="1976" alt="127 0 0 1_5000_prepare" src="https://github.com/user-attachments/assets/9f28897a-c0c3-4a43-9e1e-72478939ead7" />
 
 ---
 
-### 📜 Interview History
+###  Generated Interview Questions
 
-*(Add History Page Screenshot)*
+<img width="2880" height="4880" alt="127 0 0 1_5000_result_4" src="https://github.com/user-attachments/assets/c12e8f98-ad05-42da-8858-d4c7ee07fa64" />
+
+---
+
+###  Interview History
+
+<img width="2880" height="1976" alt="127 0 0 1_5000_history" src="https://github.com/user-attachments/assets/f9ad2614-70cd-4f99-af75-c143c2f74935" />
 
 ---
 
